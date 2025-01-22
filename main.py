@@ -1,9 +1,32 @@
+from math import divmod
+
 class CPU:
   def __init__(self, memory):
+    self.memory: Memory = memory
     self.accumulator: int = 0
+    self.cr: int = 0
 
-  def execute():
-    pass
+  def execute(instructions):
+
+    for i in range(self.memory.length):
+      self.memory.put(i, instructions[i])
+
+      self.cr = 0
+    while True:
+      instruction = self.memory(self.cr)
+      opcode, operand = divmod(instruction, 200)
+
+
+      match opcode:
+        case 10:
+          read(operand)
+        case 11:
+          write(operand)
+        case 20:
+          load(operand)
+        case 43:
+          break
+      self.cr += 1
 
   def read():
     pass
