@@ -1,7 +1,9 @@
-//Main Page of Code//
 class CPU:
   def __init__(self, memory):
     self.accumulator: int = 0
+
+  def execute():
+    pass
 
   def read():
     pass
@@ -24,7 +26,11 @@ def main(args):
   cpu = CPU(memory)
 
   with open(args[1], 'w') as program_file:
-    pass
+    instructions = []
+    for line in program_file.readlines():
+      instructions.append(int(line))
+
+    cpu.execute(instructions)
 
 if __name__ == '__main__':
   import sys
