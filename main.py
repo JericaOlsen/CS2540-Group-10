@@ -22,7 +22,7 @@ class CPU:
     self.accumulator: int = 0
     self.cr: int = 0
 
-  def execute(self, instructions):
+  def execute(self, instructions: list[int]):
     # load instructions into memory
     for i in range(min(self.memory.length, len(instructions))):
       self.memory.set(i, instructions[i])
