@@ -1,3 +1,5 @@
+import main
+
 def test_student12():
     inst = [+1007, +1008, + 1009, +3007, +3108, +3009, +4300]
 
