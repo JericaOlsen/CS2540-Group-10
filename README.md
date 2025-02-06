@@ -18,7 +18,7 @@
 - **Python Version**: Python 3.7 or higher  
 - **Memory**: At least 512MB of RAM  
 - **Storage**: At least 50MB of free disk space  
-- **Dependencies**: No additional libraries required (built-in Python features only)
+- **Dependencies**: pytest is required to run tests (along with built-in Python features like `unittest.mock`) 
 
 ## System Components
 
@@ -75,7 +75,7 @@
 ## Running UVSim
 
 1. Place your **BasicML program** in a text file (e.g., `program.txt`).
-2. Run `main.py` and enter the filename when prompted.
+2. Run `main.py`.
 3. Follow on-screen instructions for input and execution feedback.
 
 ## Error Handling
