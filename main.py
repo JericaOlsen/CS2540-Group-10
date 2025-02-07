@@ -1,3 +1,4 @@
+
 class CPU:
     """
     Simulates a basic CPU that executes simple machine instructions stored in memory.
