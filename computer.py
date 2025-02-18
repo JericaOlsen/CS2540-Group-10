@@ -4,10 +4,12 @@ class CPU:
     Simulates a basic CPU that executes simple machine instructions stored in memory.
     The CPU has an accumulator for arithmetic operations and a control register (cr) for instruction tracking.
     """
-    def __init__(self, memory):
+    def __init__(self, memory, output, input):
         self.memory: Memory = memory
         self.accumulator: int = 0  # Accumulator
         self.cr: int = 0  # Control register
+        self.output = output
+        self.input = input
 
     def execute(self):
         """
@@ -48,10 +50,10 @@ class CPU:
                 case 42:  # BRANCHZERO
                     self.branchzero(operand)
                 case 43:  # HALT
-                    print("Program halted.")
+                    self.output("Program halted.")
                     break
                 case _:
-                    print(f"Unknown opcode: {opcode}. Halting execution.")
+                    self.ouput(f"Unknown opcode: {opcode}. Halting execution.")
                     break
             
             # move to the next memory address
@@ -60,15 +62,15 @@ class CPU:
     def read(self, operand):
         while True:
             try:
-                value = int(input(f"Enter a value for memory[{operand}]: "))
+                value = int(self.input(f"Enter a value for memory[{operand}]: "))
                 self.memory.set(operand, value)
                 break  # Exit loop on successful input
             except ValueError:
-                print("Invalid input. Please enter an integer.")
+                self.output("Invalid input. Please enter an integer.")
 
     def write(self, operand):
         value = self.memory.get(operand)
-        print(f"Value at memory[{operand}]: {value}")
+        self.output(f"Value at memory[{operand}]: {value}")
 
     def load(self, operand):
         self.accumulator = self.memory.get(operand)
@@ -85,7 +87,7 @@ class CPU:
     def divide(self, operand):
         divisor = self.memory.get(operand)
         if divisor == 0:
-            print("Error: Division by zero. Halting execution.")
+            self.output("Error: Division by zero. Halting execution.")
             exit(1)
         self.accumulator //= divisor
 
@@ -99,7 +101,7 @@ class CPU:
             index (int): integer specifying where memory should branch
         """
         self.cr = index - 1
-        print("You have branched to location" + str(index))
+        self.output("You have branched to location" + str(index))
 
     def branchneg(self,index):
         """_summary_
@@ -108,7 +110,7 @@ class CPU:
         if self.accumulator < 0:
             self.branch(index)
         else:
-            print("Accumulator isn't negative, there was no branching ")
+            self.output("Accumulator isn't negative, there was no branching ")
 
     def branchzero(self,index):
         """_summary_
@@ -118,7 +120,7 @@ class CPU:
         if self.accumulator == 0:
             self.branch(index)
         else:
-            print("Accumulator isn't zero, there was no branching ")
+            self.output("Accumulator isn't zero, there was no branching ")
 
 class Memory:
     """
