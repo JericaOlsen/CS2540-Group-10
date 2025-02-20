@@ -53,7 +53,7 @@ class CPU:
                     self.output("Program halted.")
                     break
                 case _:
-                    self.ouput(f"Unknown opcode: {opcode}. Halting execution.")
+                    self.output(f"Unknown opcode: {opcode}. Halting execution.")
                     break
             
             # move to the next memory address
@@ -148,32 +148,4 @@ class Memory:
             raise IndexError("Memory index out of range")
 
 
-def main():
-    memory = Memory()
-    cpu = CPU(memory)
-
-    # Load the program from the file
-    try:
-        with open('Test1-1.txt', 'r') as program_file:
-            instructions = []
-            for line in program_file:
-                line = line.strip()
-                if line and line.lstrip('+-').isdigit():  # Ensure only valid integer lines are processed
-                    instructions.append(int(line))
-                else:
-                    print(f"Warning: Ignoring invalid instruction: {line}")
-            for i, instruction in enumerate(instructions):
-                memory.set(i, instruction)
-    
-    except FileNotFoundError:
-        print("Error: Program file not found.")
-        return
-    except ValueError as e:
-        print(f"Error reading program: {e}")
-        return
-
-    cpu.execute() 
-
-if __name__ == '__main__':
-  main()
 
