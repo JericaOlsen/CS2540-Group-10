@@ -8,6 +8,13 @@ class MainWindow(tk.Frame):
         super().__init__(master)
         memory = Memory()
         self.cpu = CPU(memory, self.open_output_window, self.open_input_window)
+
+
+
+class MainWindow(tk.Frame):
+    def __init__(self, master, cpu):
+        super().__init__(master)
+        self.cpu = cpu
         self.pack()
 
         load_program_button = tk.Button(self, text="Load Program", command=self.load_program)
@@ -49,3 +56,4 @@ class MainWindow(tk.Frame):
         user_input = simpledialog.askstring("Input", input)
 
         return user_input
+      
