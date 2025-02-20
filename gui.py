@@ -1,5 +1,14 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilename
+from tkinter import messagebox, simpledialog
+from computer import Memory, CPU
+
+class MainWindow(tk.Frame):
+    def __init__(self, master):
+        super().__init__(master)
+        memory = Memory()
+        self.cpu = CPU(memory, self.open_output_window, self.open_input_window)
+
 
 
 class MainWindow(tk.Frame):
@@ -40,8 +49,11 @@ class MainWindow(tk.Frame):
     def execute_program(self):
         self.cpu.execute()
 
-    def open_output_window(self):
-        pass
+    def open_output_window(self,output):
+        messagebox.showinfo("Output", output)
 
-    def open_input_window(self):
-        pass
+    def open_input_window(self, input):
+        user_input = simpledialog.askstring("Input", input)
+
+        return user_input
+      
