@@ -1,5 +1,5 @@
 from io import StringIO
-from main import Memory, CPU
+from computer import Memory, CPU
 
 
 def test_id6_1(monkeypatch):
@@ -7,7 +7,7 @@ def test_id6_1(monkeypatch):
         Test input
     """
     memory = Memory()
-    cpu = CPU(memory)
+    cpu = CPU(memory, print, input)
 
     for i, instruction in enumerate([1050, 1051, 2050, 3151, 4206, 1152, 4300]):
         memory.set(i, instruction)
