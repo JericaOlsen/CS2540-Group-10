@@ -1,10 +1,10 @@
 from io import StringIO
-from main import Memory, CPU
+from computer import Memory, CPU
 
 
 def test_id10_2(monkeypatch):
     memory = Memory()
-    cpu = CPU(memory)
+    cpu = CPU(memory, print, input)
 
     for i, instruction in enumerate([1097, 1098, 1099, 1197, 4300]):
         memory.set(i, instruction)
