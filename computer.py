@@ -12,12 +12,6 @@ class CPU:
         self.output = output
         self.input = input
 
-    def __init__(self, memory):
-        self.memory: Memory = memory
-        self.accumulator: int = 0  # Accumulator
-        self.cr: int = 0  # Control register
-
-
     def execute(self):
         """
         Executes instructions stored in memory until a HALT instruction (opcode 43) is encountered.
@@ -62,13 +56,8 @@ class CPU:
                     break
                 case _:
                     self.output(f"Unknown opcode: {opcode}. Halting execution.")
-
-                    print("Program halted.")
                     break
-                case _:
-                    print(f"Unknown opcode: {opcode}. Halting execution.")
-
-                    break
+                
             
             # move to the next memory address
             self.cr += 1
@@ -87,15 +76,12 @@ class CPU:
         value = self.memory.get(operand)
         self.output(f"Value at memory[{operand}]: {value}")
 
-                value = int(input(f"Enter a value for memory[{operand}]: "))
-                self.memory.set(operand, value)
-                break  # Exit loop on successful input
-            except ValueError:
-                print("Invalid input. Please enter an integer.")
+        value = int(input(f"Enter a value for memory[{operand}]: "))
+        self.memory.set(operand, value)
 
     def write(self, operand):
         value = self.memory.get(operand)
-        print(f"Value at memory[{operand}]: {value}")
+        self.output(f"Value at memory[{operand}]: {value}")
 
 
     def load(self, operand):
@@ -116,7 +102,6 @@ class CPU:
 
             self.output("Error: Division by zero. Halting execution.")
 
-            print("Error: Division by zero. Halting execution.")
 
             exit(1)
         self.accumulator //= divisor
@@ -134,7 +119,6 @@ class CPU:
 
         self.output("You have branched to location" + str(index))
 
-        print("You have branched to location" + str(index))
 
 
     def branchneg(self,index):
@@ -145,7 +129,6 @@ class CPU:
             self.branch(index)
         else:
             self.output("Accumulator isn't negative, there was no branching ")
-            print("Accumulator isn't negative, there was no branching ")
 
     def branchzero(self,index):
         """_summary_
@@ -156,7 +139,6 @@ class CPU:
             self.branch(index)
         else:
             self.output("Accumulator isn't zero, there was no branching ")
-            print("Accumulator isn't zero, there was no branching ")
 
 class Memory:
     """
