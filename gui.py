@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilename
+from tkinter.colorchooser import askcolor
 from tkinter import messagebox, simpledialog
 from computer import Memory, CPU
 import configparser
@@ -7,26 +8,41 @@ import configparser
 class MainWindow(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
+        self.master = master
         memory = Memory()
         self.cpu = CPU(memory, self.open_output_window, self.open_input_window)
         self.pack()
 
-        config = configparser.ConfigParser()
-        config.read('config.ini')
+        self.config = configparser.ConfigParser()
+        self.config.read('config.ini')
+
+        menubar = tk.Menu(master)
+        
+        file_menu = tk.Menu(menubar, tearoff=0)
+        file_menu.add_command(label="Load Program", command=self.load_program)
+        file_menu.add_command(label="Save Program", command=self.save_program) # save_program still needs to be implemented
+        menubar.add_cascade(label="File", menu=file_menu)
+
+        colors_menu = tk.Menu(menubar, tearoff=0)
+        colors_menu.add_command(label="Select Window Foreground", command=self.select_window_foreground)
+        colors_menu.add_command(label="Select Window Background", command=self.select_window_background)
+        colors_menu.add_command(label="Select Button Foreground", command=self.select_button_foreground)
+        colors_menu.add_command(label="Select Button Background", command=self.select_button_background)
+        menubar.add_cascade(label="Colors", menu=colors_menu)
+
+        self.master.config(menu=menubar)
 
 
-        master.option_add('*foreground', config['window']['foreground'])
-        master.option_add('*background', config['window']['background'])
-        master.option_add('*Button.foreground', config['button']['foreground'])
-        master.option_add('*Button.background', config['button']['background'])
+        self.master.option_add('*foreground', self.config['window']['foreground'])
+        self.master.option_add('*background', self.config['window']['background'])
+        self.master.option_add('*Button.foreground', self.config['button']['foreground'])
+        self.master.option_add('*Button.background', self.config['button']['background'])
 
-        load_program_button = tk.Button(self, text="Load Program", command=self.load_program)
+        #load_program_button = tk.Button(self, text="Load Program", command=self.load_program)
         execute_program_button = tk.Button(self, text="Execute Program", command=self.execute_program)
 
-        load_program_button.pack()
+        #load_program_button.pack()
         execute_program_button.pack()
-
-
 
     def reset_cpu_memory(self):
         self.memory = Memory()
@@ -53,6 +69,9 @@ class MainWindow(tk.Frame):
         except ValueError as e:
             self.open_output_window(f"Error reading program: {e}")
             return
+
+    def save_program(self):
+        pass
 
     def execute_program(self):
         self.cpu.execute()
@@ -102,3 +121,36 @@ class MainWindow(tk.Frame):
 
         # Return user input after window is closed
         return self.user_input
+
+
+    def select_window_foreground(self):
+        self.config['window']['foreground'] = askcolor()[1] or self.config['window']['foreground']
+
+        with open('config.ini', 'w') as config_file:
+            self.config.write(config_file)
+    
+        self.master.option_add('*foreground', self.config['window']['foreground'])
+
+    def select_window_background(self):
+        self.config['window']['background'] = askcolor()[1] or self.config['window']['background']
+
+        with open('config.ini', 'w') as config_file:
+            self.config.write(config_file)
+    
+        self.master.option_add('*background', self.config['window']['background'])
+
+    def select_button_foreground(self):
+        self.config['button']['foreground'] = askcolor()[1] or self.config['button']['foreground']
+
+        with open('config.ini', 'w') as config_file:
+            self.config.write(config_file)
+    
+        self.master.option_add('*Button.foreground', self.config['button']['foreground'])
+
+    def select_button_background(self):
+        self.config['button']['background'] = askcolor()[1] or self.config['button']['foreground']
+
+        with open('config.ini', 'w') as config_file:
+            self.config.write(config_file)
+    
+        self.master.option_add('*Button.background', self.config['button']['background'])
